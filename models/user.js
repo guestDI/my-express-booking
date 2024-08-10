@@ -25,7 +25,6 @@ const User = sequelize.define('User', {
   timestamps: true, 
 });
 
-User.hasMany(Role, { onDelete: "CASCADE" });
-Role.belongsTo(User, { constraints: true });
+User.belongsTo(Role, { foreignKey: 'role_id', onDelete: 'SET NULL' });
 
 module.exports = User;

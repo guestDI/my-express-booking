@@ -8,6 +8,11 @@ var app = require('../app');
 var debug = require('debug')('my-booking-express:server');
 var http = require('http');
 const sequelize = require("../database/database");
+const Role = require('../models/role');
+const User = require('../models/user');
+const Room = require('../models/room');
+const Booking = require('../models/booking');
+const Payment = require('../models/payment');
 
 sequelize
   .sync()
