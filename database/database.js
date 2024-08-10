@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('your_database_name', 'your_username', 'your_password', {
-  host: 'localhost',
+const sequelize = new Sequelize(process.env.DB, process.env.USERNAME, process.env.PASSWORD, {
+  host: process.env.HOST,
   dialect: 'postgres',
-  logging: false, // Уберите или измените на true, если хотите видеть запросы в консоли
+  logging: false, 
 });
 
 module.exports = sequelize;
