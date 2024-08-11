@@ -59,6 +59,29 @@ const login = async (req, res) => {
   }
 }
 
+const logout = async (req, res) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) {
+    return res.status(400).json({ message: 'Token not provided' })
+  }
+
+  try {
+    const decoded = jwt.verify(token, 'your_secret_key')
+    const expiresAt = new Date(decoded.exp * 1000)
+
+    await Blacklist.create({
+      token,
+      expiresAt,
+    })
+
+    res.json({ message: 'Logged out successfully' })
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 const getProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
@@ -76,4 +99,5 @@ module.exports = {
   getProfile,
   login,
   register,
+  logout,
 }

@@ -1,26 +1,21 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../database/database')
-const Role = require('./role')
 
-const User = sequelize.define(
-  'User',
+const Blacklist = sequelize.define(
+  'Blacklist',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
+    token: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-    password_hash: {
-      type: DataTypes.STRING,
+    expiresAt: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
   },
@@ -29,6 +24,4 @@ const User = sequelize.define(
   }
 )
 
-User.belongsTo(Role, { foreignKey: 'role_id', onDelete: 'SET NULL' })
-
-module.exports = User
+module.exports = Blacklist

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const Blacklist = require('../models/blacklist')
 
 const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization']
@@ -8,7 +9,12 @@ const authenticateToken = async (req, res, next) => {
   if (!token) return res.sendStatus(401)
 
   try {
-    // generate properly secret key
+    const blacklistedToken = await Blacklist.findOne({ where: { token } })
+
+    if (blacklistedToken) {
+      return res.sendStatus(403)
+    }
+
     const decoded = jwt.verify(token, process.env.SECRET_KEY)
     const user = await User.findByPk(decoded.id)
 
