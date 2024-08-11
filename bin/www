@@ -18,8 +18,8 @@ const Blacklist = require('../models/blacklist')
 sequelize
   .sync()
   .then(() => {
-    Role.create({ name: 'admin' })
-    Role.create({ name: 'user' })
+    // Role.create({ name: 'admin' })
+    // Role.create({ name: 'user' })
     // User.create({ email: 'test@email.com', name: 'Joe Doe', roleId: 1})
     console.log('Connection to database established successfully.')
   })

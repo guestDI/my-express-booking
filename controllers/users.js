@@ -23,7 +23,7 @@ const register = async (req, res) => {
       role_id: userRole.id,
     })
 
-    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    const token = jwt.sign({ id: user.id, name: user.name }, process.env.SECRET_KEY, {
       expiresIn: '1h',
     })
 
@@ -49,7 +49,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' })
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    const token = jwt.sign({ id: user.id, name: user.name }, process.env.SECRET_KEY, {
       expiresIn: '1h',
     })
 

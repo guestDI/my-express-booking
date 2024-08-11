@@ -3,6 +3,7 @@ const router = express.Router()
 const userController = require('../controllers/users')
 const validate = require('../middleware/validate')
 const { check } = require('express-validator')
+const authenticateToken = require('../middleware/authMiddleware')
 
 router.post(
   '/register',
