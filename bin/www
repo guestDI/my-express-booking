@@ -17,6 +17,8 @@ const Payment = require('../models/payment');
 sequelize
   .sync()
   .then(() => {
+    // Role.create({ name: 'admin' });
+    // Role.create({ name: 'user' });
     console.log("Connection to database established successfully.");
   })
   .catch((err) => {
