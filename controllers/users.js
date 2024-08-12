@@ -68,7 +68,7 @@ const logout = async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, 'your_secret_key')
+    const decoded = jwt.verify(token, process.env.SECRET_KEY)
     const expiresAt = new Date(decoded.exp * 1000)
 
     await Blacklist.create({

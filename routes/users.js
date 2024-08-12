@@ -20,24 +20,19 @@ router.post(
   userController.register
 )
 
-router.post('/login', validate, userController.login)
+router.post('/login', 
+  check('email')
+    .isEmail()
+    .withMessage('Enter a valid email address')
+    .normalizeEmail(),
+  check('password')
+    .notEmpty()
+    .isLength({ min: 8 })
+    .withMessage('Must be at least 8 chars long'),
+  validate, 
+  userController.login)
 
 router.get('/profile', validate, authenticateToken, userController.getProfile)
-
-router.post('/logout', function (req, res, next) {
-  res.send('respond with a resource')
-})
-
-router.get('/users/me', function (req, res, next) {
-  res.send('respond with a resource')
-})
-
-router.put('/users/me', function (req, res, next) {
-  res.send('respond with a resource')
-})
-
-router.delete('/users/me', function (req, res, next) {
-  res.send('respond with a resource')
-})
+router.get('/logout', validate, authenticateToken, userController.logout)
 
 module.exports = router
