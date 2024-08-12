@@ -10,12 +10,17 @@ const Payment = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    stripePaymentIntentId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     amount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    payment_method: {
-      type: DataTypes.ENUM('credit_card', 'paypal', 'bank_transfer'),
+    currency: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     payment_date: {
