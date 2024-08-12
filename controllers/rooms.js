@@ -2,13 +2,13 @@ const Room = require('../models/room');
 
 const createRoom = async (req, res) => {
   try {
-    const { name, description, capacity, price } = req.body;
+    const { name, description, capacity, price_per_night } = req.body;
 
     const newRoom = await Room.create({
       name,
       description,
       capacity,
-      price,
+      price_per_night,
     });
 
     res.status(201).json(newRoom);
@@ -42,7 +42,7 @@ const getRoomById = async (req, res) => {
 
 const updateRoom = async (req, res) => {
   try {
-    const { name, description, capacity, price } = req.body;
+    const { name, description, capacity, price_per_night } = req.body;
     const room = await Room.findByPk(req.params.id);
 
     if (!room) {
@@ -52,7 +52,7 @@ const updateRoom = async (req, res) => {
     room.name = name || room.name;
     room.description = description || room.description;
     room.capacity = capacity || room.capacity;
-    room.price = price || room.price;
+    room.price_per_night = price_per_night || room.price_per_night;
 
     await room.save();
 

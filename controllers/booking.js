@@ -5,7 +5,7 @@ const User = require('../models/user');
 const createBooking = async (req, res) => {
   try {
     const { roomId, startDate, endDate } = req.body;
-    const userId = req.user.id;  // ID пользователя, выполняющего бронирование
+    const userId = req.user.id; 
 
     const room = await Room.findByPk(roomId);
     if (!room) {
