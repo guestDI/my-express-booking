@@ -1,28 +1,31 @@
 const express = require('express')
 const router = express.Router()
 const checkRole = require('../middleware/checkRole')
-const roomController = require('../controllers/rooms')
-const authenticateToken = require('../middleware/authMiddleware')
+const { createRoom, getAllRooms, getRoomById, updateRoom, deleteRoom } = require('../controllers/rooms')
+const authenticateToken = require('../middleware/authMiddleware');
+const { validate, createRoomSchema,  } = require('../middleware/validate');
 
 router.post(
   '/',
   authenticateToken,
   checkRole('admin'),
-  roomController.createRoom
+  createRoomSchema,
+  validate,
+  createRoom
 )
-router.get('/', roomController.getAllRooms)
-router.get('/:id', roomController.getRoomById)
+router.get('/', getAllRooms)
+router.get('/:id', getRoomById)
 router.put(
   '/:id',
   authenticateToken,
   checkRole('admin'),
-  roomController.updateRoom
+  updateRoom
 )
 router.delete(
   '/:id',
   authenticateToken,
   checkRole('admin'),
-  roomController.deleteRoom
+  deleteRoom
 )
 
 module.exports = router
