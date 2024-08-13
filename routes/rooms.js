@@ -7,6 +7,7 @@ const {
   getRoomById,
   updateRoom,
   deleteRoom,
+  searchRooms,
 } = require('../controllers/rooms');
 const authenticateToken = require('../middleware/authMiddleware');
 const { validate, createRoomSchema } = require('../middleware/validate');
@@ -21,6 +22,7 @@ router.post(
 );
 router.get('/', getAllRooms);
 router.get('/:id', getRoomById);
+router.get('/search', searchRooms);
 router.put('/:id', authenticateToken, checkRole('admin'), updateRoom);
 router.delete('/:id', authenticateToken, checkRole('admin'), deleteRoom);
 

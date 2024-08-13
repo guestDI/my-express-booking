@@ -26,7 +26,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/rooms', roomsRoutes);
 app.use('/api/booking', bookingRoutes);
 app.use('/api/payment', bookingRoutes);
-app.use('/api', utilsRoutes)
+app.use('/api', utilsRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,4 +1,5 @@
 const Room = require('../models/room');
+const { Op } = require('sequelize');
 
 const createRoom = async (req, res) => {
   try {
@@ -19,10 +20,72 @@ const createRoom = async (req, res) => {
 
 const getAllRooms = async (req, res) => {
   try {
-    const rooms = await Room.findAll();
-    res.json(rooms);
+    const { page = 1, limit = 10, minPrice, maxPrice, guests } = req.query;
+
+    let where = {};
+
+    if (minPrice || maxPrice) {
+      where.price_per_night = {};
+      if (minPrice) {
+        where.price_per_night[Op.gte] = minPrice;
+      }
+      if (maxPrice) {
+        where.price_per_night[Op.lte] = maxPrice;
+      }
+    }
+
+    if (guests) {
+      where.maxGuests = {
+        [Op.gte]: guests,
+      };
+    }
+
+    const options = {
+      where,
+      limit: parseInt(limit),
+      offset: (page - 1) * limit,
+    };
+
+    const rooms = await Room.findAndCountAll(options);
+
+    res.status(200).json({
+      totalItems: rooms.count,
+      totalPages: Math.ceil(rooms.count / limit),
+      currentPage: parseInt(page),
+      rooms: rooms.rows,
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ error: 'Failed to retrieve rooms' });
+  }
+};
+
+const searchRooms = async (req, res) => {
+  try {
+    const { minPrice, maxPrice, guests, page = 1, limit = 10 } = req.query;
+
+    let where = {};
+
+    if (minPrice || maxPrice) {
+      where.price_per_night = {};
+      if (minPrice) {
+        where.price_per_night[Op.gte] = minPrice;
+      }
+      if (maxPrice) {
+        where.price_per_night[Op.lte] = maxPrice;
+      }
+    }
+
+    if (guests) {
+      where.maxGuests = {
+        [Op.gte]: guests,
+      };
+    }
+
+    const rooms = await Room.findAll({ where });
+
+    res.status(200).json(rooms);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to search rooms' });
   }
 };
 
@@ -84,4 +147,5 @@ module.exports = {
   getRoomById,
   updateRoom,
   deleteRoom,
+  searchRooms,
 };

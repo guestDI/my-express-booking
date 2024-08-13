@@ -54,7 +54,7 @@ const register = async (req, res) => {
     });
     res.status(201).json({ token });
   } catch (err) {
-    console.log('e', err)
+    console.log('e', err);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
