@@ -117,10 +117,30 @@ const deleteBooking = async (req, res) => {
   }
 };
 
+const cancelBooking = async (req, res) => {
+  const { bookingId } = req.params;
+
+  try {
+    const booking = await Booking.findByPk(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    booking.status = 'cancelled';
+    await booking.save();
+
+    res.status(200).json(booking);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to cancel booking' });
+  }
+};
+
 module.exports = {
   getAllBookings,
   createBooking,
   getBookingById,
   updateBooking,
   deleteBooking,
+  cancelBooking,
 };

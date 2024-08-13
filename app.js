@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const setupSwagger = require('./config/swagger');
 require('dotenv').config();
 
 const usersRoutes = require('./routes/users');
@@ -14,7 +15,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,6 +28,8 @@ app.use('/api/rooms', roomsRoutes);
 app.use('/api/booking', bookingRoutes);
 app.use('/api/payment', bookingRoutes);
 app.use('/api', utilsRoutes);
+
+setupSwagger(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

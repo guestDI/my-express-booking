@@ -1,3 +1,69 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: API for managing users
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Creation of a new user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: test@email.com'
+ *               name:
+ *                 type: string
+ *                 example: Joe Doe
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: login
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: test@email.com'
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User logged in
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
 const express = require('express');
 const router = express.Router();
 const { register, login, getProfile, logout } = require('../controllers/users');
