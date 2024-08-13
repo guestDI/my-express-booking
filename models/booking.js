@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../database/database')
-const User = require('./user')
-const Room = require('./room')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/database');
+const User = require('./user');
+const Room = require('./room');
 
 const Booking = sequelize.define(
   'Booking',
@@ -31,9 +31,9 @@ const Booking = sequelize.define(
   {
     timestamps: true,
   }
-)
+);
 
-Booking.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' })
-Booking.belongsTo(Room, { foreignKey: 'room_id', onDelete: 'CASCADE' })
+Booking.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+Booking.belongsTo(Room, { foreignKey: 'room_id', onDelete: 'CASCADE' });
 
-module.exports = Booking
+module.exports = Booking;

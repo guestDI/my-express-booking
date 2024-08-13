@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../database/database')
-const Role = require('./role')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/database');
+const Role = require('./role');
 
 const User = sequelize.define(
   'User',
@@ -23,12 +23,16 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,
   }
-)
+);
 
-User.belongsTo(Role, { foreignKey: 'role_id', onDelete: 'SET NULL' })
+User.belongsTo(Role, { foreignKey: 'role_id', onDelete: 'SET NULL' });
 
-module.exports = User
+module.exports = User;

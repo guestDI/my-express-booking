@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
   process.env.DB,
@@ -17,6 +17,6 @@ const sequelize = new Sequelize(
       },
     },
   }
-)
+);
 
-module.exports = sequelize
+module.exports = sequelize;

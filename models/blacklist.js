@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../database/database')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/database');
 
 const Blacklist = sequelize.define(
   'Blacklist',
@@ -22,6 +22,6 @@ const Blacklist = sequelize.define(
   {
     timestamps: true,
   }
-)
+);
 
-module.exports = Blacklist
+module.exports = Blacklist;

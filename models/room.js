@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../database/database')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/database');
 
 const Room = sequelize.define(
   'Room',
@@ -21,6 +21,10 @@ const Room = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    amenities: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
     price_per_night: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
@@ -29,10 +33,15 @@ const Room = sequelize.define(
       type: DataTypes.ENUM('available', 'unavailable'),
       defaultValue: 'available',
     },
+    requiresPayment: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     timestamps: true,
   }
-)
+);
 
-module.exports = Room
+module.exports = Room;
