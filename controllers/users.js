@@ -42,18 +42,19 @@ const register = async (req, res) => {
       }
     );
 
-    const html = pug.renderFile('../views/email.pug', {
-      verificationLink: `https://yourdomain.com/verify-email?token=${token}`,
+    const html = pug.renderFile('views/email.pug', {
+      verificationLink: `http://127.0.0.0:4000/verify-email?token=${token}`,
     });
 
-    res.status(201).json({ token });
     transporter.sendMail({
       to: email,
       from: 'notification@express-booking.com',
       subject: 'Verify your email',
       html: html,
     });
+    res.status(201).json({ token });
   } catch (err) {
+    console.log('e', err)
     res.status(500).json({ message: 'Internal server error' });
   }
 };
