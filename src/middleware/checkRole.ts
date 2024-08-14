@@ -1,5 +1,7 @@
-module.exports = (requiredRole) => {
-  return (req, res, next) => {
+import { Response, NextFunction, Request } from "express";
+
+const checkRole = (requiredRole: string) => {
+  return (req, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -12,4 +14,5 @@ module.exports = (requiredRole) => {
 
     next();
   };
-};
+}
+export default checkRole;

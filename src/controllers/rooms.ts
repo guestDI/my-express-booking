@@ -144,7 +144,7 @@ export const updateRoom = async (req: CreateRoomRequest, res: Response) => {
   }
 };
 
-const deleteRoom = async (req, res) => {
+export const deleteRoom = async (req, res) => {
   try {
     const room = await Room.findByPk(req.params.id);
 

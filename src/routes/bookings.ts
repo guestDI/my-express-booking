@@ -1,16 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const checkRole = require('../middleware/authMiddleware');
-const authenticateToken = require('../middleware/authMiddleware');
-const {
-  createBooking,
-  getAllBookings,
-  getBookingById,
-  deleteBooking,
-  updateBooking,
-  cancelBooking,
-} = require('../controllers/booking');
-const { validate, createBookingSchema } = require('../middleware/validate');
+import checkRole from '../middleware/authMiddleware';
+import authenticateToken from '../middleware/authMiddleware';
+import { createBooking, getAllBookings, getBookingById, deleteBooking, updateBooking, cancelBooking } from '../controllers/booking';
+import { validate, createBookingSchema } from '../middleware/validate';
 
 router.post(
   '/',

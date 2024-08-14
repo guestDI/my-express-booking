@@ -8,6 +8,7 @@ class User extends Model {
   public email!: string; 
   public password_hash!: string; 
   public isVerified!: boolean; 
+  public Role!: Role
 }
 
 User.init({

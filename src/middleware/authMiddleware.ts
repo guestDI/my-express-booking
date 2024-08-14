@@ -1,9 +1,16 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const Role = require('../models/role');
-const Blacklist = require('../models/blacklist');
+import { Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../models/user';
+import Role from '../models/role';
+import Blacklist from '../models/blacklist';
 
-const authenticateToken = async (req, res, next) => {
+interface DecodedToken {
+  id: number;
+  iat: number;
+  exp: number;
+}
+
+export const authenticateToken = async (req, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -16,7 +23,7 @@ const authenticateToken = async (req, res, next) => {
       return res.sendStatus(403);
     }
 
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY as string) as DecodedToken;
     const user = await User.findByPk(decoded.id, {
       include: [Role],
     });
@@ -27,7 +34,7 @@ const authenticateToken = async (req, res, next) => {
 
     req.user = {
       id: user.id,
-      username: user.username,
+      email: user.email,
       role: user.Role.name,
     };
     next();
@@ -36,4 +43,4 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-module.exports = authenticateToken;
+export default authenticateToken;

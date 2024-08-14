@@ -1,8 +1,9 @@
-const stripe = require('../../config/stripe');
+import stripe from '../config/stripe';
+import { Payment } from '../models';
 
-const createPaymentIntent = async (req, res) => {
+export const createPaymentIntent = async (req, res) => {
   try {
-    const { amount, currency } = req.body;
+    const { amount, currency, userId } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
@@ -26,7 +27,7 @@ const createPaymentIntent = async (req, res) => {
   }
 };
 
-const handleWebhook = async (req, res) => {
+export const handleWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
@@ -34,9 +35,9 @@ const handleWebhook = async (req, res) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET
+      process.env.STRIPE_WEBHOOK_SECRET as string
     );
-  } catch (err) {
+  } catch (err: any) {
     console.error('Webhook signature verification failed:', err.message);
     return res
       .status(400)
@@ -59,9 +60,4 @@ const handleWebhook = async (req, res) => {
   }
 
   res.status(200).send('Received webhook');
-};
-
-module.exports = {
-  createPaymentIntent,
-  handleWebhook,
 };

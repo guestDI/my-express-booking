@@ -1,6 +1,10 @@
-const { checkSchema, validationResult } = require('express-validator');
+import { checkSchema, validationResult } from 'express-validator';
 
-const createRegistrationUserSchema = checkSchema({
+interface ValidationError {
+  [key: string]: string;
+}
+
+export const createRegistrationUserSchema = checkSchema({
   email: {
     in: ['body'],
     isEmail: {
@@ -26,7 +30,7 @@ const createRegistrationUserSchema = checkSchema({
   },
 });
 
-const createLoginUserSchema = checkSchema({
+export const createLoginUserSchema = checkSchema({
   email: {
     in: ['body'],
     isEmail: {
@@ -42,7 +46,7 @@ const createLoginUserSchema = checkSchema({
   },
 });
 
-const createRoomSchema = checkSchema({
+export const createRoomSchema = checkSchema({
   name: {
     in: ['body'],
     isString: {
@@ -82,7 +86,7 @@ const createRoomSchema = checkSchema({
   },
 });
 
-const createBookingSchema = checkSchema({
+export const createBookingSchema = checkSchema({
   roomId: {
     in: ['body'],
     isInt: {
@@ -121,20 +125,14 @@ const createBookingSchema = checkSchema({
   },
 });
 
-const validate = (req, res, next) => {
+export const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    let error = {};
-    errors.array().map((err) => (error[err.param] = err.msg));
+    const error: ValidationError = {};
+    errors.array().forEach((err: any) => {
+      error[err.param] = err.msg;
+    });
     return res.status(422).json({ error });
   }
   next();
-};
-
-module.exports = {
-  createLoginUserSchema,
-  createRegistrationUserSchema,
-  validate,
-  createRoomSchema,
-  createBookingSchema,
 };

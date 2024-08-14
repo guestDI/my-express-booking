@@ -1,8 +1,8 @@
-const Booking = require('../models/booking');
-const Room = require('../models/room');
-const User = require('../models/user');
+import { Response } from 'express';
+import { Room, User, Booking, Payment } from '../models';
+import stripe from '../config/stripe';
 
-const createBooking = async (req, res) => {
+export const createBooking = async (req, res: Response) => {
   try {
     const { roomId, startDate, endDate, totalAmount } = req.body;
     const userId = req.user.id;
@@ -47,7 +47,7 @@ const createBooking = async (req, res) => {
   }
 };
 
-const getAllBookings = async (req, res) => {
+export const getAllBookings = async (req, res: Response) => {
   try {
     const bookings = await Booking.findAll({
       include: [
@@ -61,7 +61,7 @@ const getAllBookings = async (req, res) => {
   }
 };
 
-const getBookingById = async (req, res) => {
+export const getBookingById = async (req, res: Response) => {
   try {
     const booking = await Booking.findByPk(req.params.id, {
       include: [
@@ -80,16 +80,15 @@ const getBookingById = async (req, res) => {
   }
 };
 
-const updateBooking = async (req, res) => {
+export const updateBooking = async (req, res: Response) => {
   try {
-    const { roomId, startDate, endDate } = req.body;
-    const booking = await Booking.findByPk(req.params.id);
+    const { startDate, endDate } = req.body;
+    const booking = await Booking.findByPk(req.roomId);
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    booking.room_id = roomId || booking.room_id;
     booking.start_date = startDate || booking.start_date;
     booking.end_date = endDate || booking.end_date;
 
@@ -101,7 +100,7 @@ const updateBooking = async (req, res) => {
   }
 };
 
-const deleteBooking = async (req, res) => {
+export const deleteBooking = async (req, res: Response) => {
   try {
     const booking = await Booking.findByPk(req.params.id);
 
@@ -117,11 +116,11 @@ const deleteBooking = async (req, res) => {
   }
 };
 
-const cancelBooking = async (req, res) => {
-  const { bookingId } = req.params;
+export const cancelBooking = async (req, res: Response) => {
+  const { id } = req.params;
 
   try {
-    const booking = await Booking.findByPk(bookingId);
+    const booking = await Booking.findByPk(id);
 
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
@@ -134,13 +133,4 @@ const cancelBooking = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Failed to cancel booking' });
   }
-};
-
-module.exports = {
-  getAllBookings,
-  createBooking,
-  getBookingById,
-  updateBooking,
-  deleteBooking,
-  cancelBooking,
 };

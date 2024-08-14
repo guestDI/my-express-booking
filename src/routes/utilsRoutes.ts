@@ -1,9 +1,13 @@
-const { User } = require('../models/user');
-const express = require('express');
+import { User } from '../models';
+import express, { Response, Request } from 'express';
 const router = express.Router();
-const authenticateToken = require('../middleware/authMiddleware');
+import authenticateToken from '../middleware/authMiddleware';
 
-router.get('/verify-email', authenticateToken, async (req, res) => {
+interface UserRequest extends Request{
+  user?: User;
+}
+
+router.get('/verify-email', authenticateToken, async (req: UserRequest, res: Response) => {
   try {
     if (!req.user) {
       return res.status(403).send('Invalid token');
@@ -28,4 +32,4 @@ router.get('/verify-email', authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

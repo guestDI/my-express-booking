@@ -1,16 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const checkRole = require('../middleware/checkRole');
-const {
-  createRoom,
-  getAllRooms,
-  getRoomById,
-  updateRoom,
-  deleteRoom,
-  searchRooms,
-} = require('../controllers/rooms');
-const authenticateToken = require('../middleware/authMiddleware');
-const { validate, createRoomSchema } = require('../middleware/validate');
+import checkRole from '../middleware/checkRole';
+import { createRoom, getAllRooms, getRoomById, updateRoom, deleteRoom, searchRooms } from '../controllers/rooms';
+import authenticateToken from '../middleware/authMiddleware';
+import { validate, createRoomSchema } from '../middleware/validate';
 
 router.post(
   '/',
