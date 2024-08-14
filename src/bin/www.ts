@@ -8,12 +8,7 @@ import app from '../app';
 var debug = require('debug')('my-booking-express:server');
 var http = require('http');
 import sequelize from '../config/database';
-import Role from '../models/role';
-import User from '../models/user';
-const Room = require('../models/room');
-const Booking = require('../models/booking');
-const Payment = require('../models/payment');
-import Blacklist from '../models/blacklist';
+import { Role, User, Room, Booking, Blacklist } from '../models';
 
 sequelize
   .sync()

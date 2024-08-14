@@ -1,8 +1,18 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database'
 
-const Room = sequelize.define(
-  'Room',
+class Room extends Model {
+  public id!: number;
+  public name!: string;
+  public description!: string; 
+  public maxGuests!: number; 
+  public amenities!: string[]; 
+  public price_per_night!: number; 
+  public status!: string;
+  public requiresPayment!: boolean 
+}
+
+Room.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -23,7 +33,7 @@ const Room = sequelize.define(
     },
     amenities: {
       type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: true,
+      allowNull: false,
     },
     price_per_night: {
       type: DataTypes.DECIMAL(10, 2),
@@ -40,8 +50,10 @@ const Room = sequelize.define(
     },
   },
   {
+    sequelize,
+    tableName: 'Room',
     timestamps: true,
   }
 );
 
-module.exports = Room;
+export default Room;

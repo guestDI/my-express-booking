@@ -1,7 +1,26 @@
-const Room = require('../models/room');
-const { Op } = require('sequelize');
+import { Request, Response } from 'express';
+import { Room } from '../models';
+import { Op, WhereOptions } from 'sequelize';
 
-const createRoom = async (req, res) => {
+interface CreateRoomRequest extends Request {
+  body: {
+    name?: string;
+    description?: string;
+    capacity?: number;
+    price_per_night?: number;
+  };
+}
+
+interface RoomFilter {
+  price_per_night?: {
+    [key: symbol]: number;
+  };
+  maxGuests?: {
+    [key: symbol]: number;
+  };
+}
+
+export const createRoom = async (req: CreateRoomRequest, res: Response) => {
   try {
     const { name, description, capacity, price_per_night } = req.body;
 
@@ -18,16 +37,16 @@ const createRoom = async (req, res) => {
   }
 };
 
-const getAllRooms = async (req, res) => {
+export const getAllRooms = async (req, res: Response): Promise<void> => {
   try {
     const { page = 1, limit = 10, minPrice, maxPrice, guests } = req.query;
 
-    let where = {};
+    let where: WhereOptions<RoomFilter> = {};
 
     if (minPrice || maxPrice) {
       where.price_per_night = {};
       if (minPrice) {
-        where.price_per_night[Op.gte] = minPrice;
+        where.price_per_night[Op.gte] = minPrice ;
       }
       if (maxPrice) {
         where.price_per_night[Op.lte] = maxPrice;
@@ -59,11 +78,11 @@ const getAllRooms = async (req, res) => {
   }
 };
 
-const searchRooms = async (req, res) => {
+export const searchRooms = async (req, res: Response) => {
   try {
-    const { minPrice, maxPrice, guests, page = 1, limit = 10 } = req.query;
+    const { minPrice, maxPrice, guests } = req.query;
 
-    let where = {};
+    let where: WhereOptions<RoomFilter> = {};
 
     if (minPrice || maxPrice) {
       where.price_per_night = {};
@@ -89,7 +108,7 @@ const searchRooms = async (req, res) => {
   }
 };
 
-const getRoomById = async (req, res) => {
+export const getRoomById = async (req, res: Response) => {
   try {
     const room = await Room.findByPk(req.params.id);
 
@@ -103,7 +122,7 @@ const getRoomById = async (req, res) => {
   }
 };
 
-const updateRoom = async (req, res) => {
+export const updateRoom = async (req: CreateRoomRequest, res: Response) => {
   try {
     const { name, description, capacity, price_per_night } = req.body;
     const room = await Room.findByPk(req.params.id);
@@ -114,7 +133,7 @@ const updateRoom = async (req, res) => {
 
     room.name = name || room.name;
     room.description = description || room.description;
-    room.capacity = capacity || room.capacity;
+    room.maxGuests = capacity || room.maxGuests;
     room.price_per_night = price_per_night || room.price_per_night;
 
     await room.save();
@@ -139,13 +158,4 @@ const deleteRoom = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
   }
-};
-
-module.exports = {
-  createRoom,
-  getAllRooms,
-  getRoomById,
-  updateRoom,
-  deleteRoom,
-  searchRooms,
 };

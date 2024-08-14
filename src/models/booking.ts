@@ -1,10 +1,16 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const User = require('./user');
-const Room = require('./room');
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database'
+import { User, Room } from './index'
 
-const Booking = sequelize.define(
-  'Booking',
+class Booking extends Model {
+  public id!: number;
+  public start_date!: Date;
+  public end_date!: Date; 
+  public total_price!: number; 
+  public status!: string; 
+}
+
+Booking.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -29,6 +35,8 @@ const Booking = sequelize.define(
     },
   },
   {
+    sequelize, 
+    tableName: 'Booking',
     timestamps: true,
   }
 );
@@ -36,4 +44,4 @@ const Booking = sequelize.define(
 Booking.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Booking.belongsTo(Room, { foreignKey: 'room_id', onDelete: 'CASCADE' });
 
-module.exports = Booking;
+export default Booking;

@@ -1,10 +1,8 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const Role = require('../models/role');
-const Blacklist = require('../models/blacklist');
-const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
+import { Role, User, Blacklist } from '../models';
+import nodemailer from 'nodemailer'
+import sendgridTransport from 'nodemailer-sendgrid-transport'
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -14,7 +12,7 @@ const transporter = nodemailer.createTransport(
   })
 );
 
-const register = async (req, res) => {
+export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
@@ -28,15 +26,19 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     let token = '';
 
-    const user = await User.create({
+    if(!userRole) {
+      return res.status(404).json({ message: 'Default role is not found' });
+    }
+
+    await User.create({
       name,
       email,
       password_hash: hashedPassword,
       role_id: userRole.id,
-    }).then(() => {
+    }).then((user) => {
       token = jwt.sign(
         { id: user.id, name: user.name },
-        process.env.SECRET_KEY,
+        process.env.SECRET_KEY as string,
         {
           expiresIn: '1h',
         }
@@ -61,7 +63,7 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -79,7 +81,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, name: user.name },
-      process.env.SECRET_KEY,
+      process.env.SECRET_KEY as string,
       {
         expiresIn: '1h',
       }
@@ -91,7 +93,7 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -100,8 +102,8 @@ const logout = async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    const expiresAt = new Date(decoded.exp * 1000);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
+    const expiresAt = new Date((decoded as any).exp * 1000);
 
     await Blacklist.create({
       token,
@@ -114,7 +116,7 @@ const logout = async (req, res) => {
   }
 };
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
       include: Role,
@@ -125,11 +127,4 @@ const getProfile = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
   }
-};
-
-module.exports = {
-  getProfile,
-  login,
-  register,
-  logout,
 };

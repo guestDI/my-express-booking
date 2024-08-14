@@ -33,9 +33,11 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.3.0",
+    "@types/nodemailer": "^6.4.15",
     "@types/sequelize": "^4.28.20",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
