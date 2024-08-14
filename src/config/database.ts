@@ -1,12 +1,13 @@
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
 
+// re-write it with a type
 const sequelize = new Sequelize(
-  process.env.DB,
-  process.env.USERNAME,
-  process.env.PASSWORD,
+  process.env.DB as string, 
+  process.env.USERNAME as string,
+  process.env.PASSWORD as string,
   {
     host: process.env.HOST,
-    port: process.env.DB_PORT,
+    port: process.env.DB_PORT as any,
     dialect: 'postgres',
     logging: false,
     schema: 'booking',
@@ -19,4 +20,4 @@ const sequelize = new Sequelize(
   }
 );
 
-module.exports = sequelize;
+export default sequelize;

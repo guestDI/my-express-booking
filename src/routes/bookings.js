@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const checkRole = require('../../middleware/authMiddleware');
-const authenticateToken = require('../../middleware/authMiddleware');
+const checkRole = require('../middleware/authMiddleware');
+const authenticateToken = require('../middleware/authMiddleware');
 const {
   createBooking,
   getAllBookings,
@@ -10,7 +10,7 @@ const {
   updateBooking,
   cancelBooking,
 } = require('../controllers/booking');
-const { validate, createBookingSchema } = require('../../middleware/validate');
+const { validate, createBookingSchema } = require('../middleware/validate');
 
 router.post(
   '/',

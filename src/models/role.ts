@@ -1,8 +1,12 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/database');
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database'
 
-const Role = sequelize.define(
-  'Role',
+class Role extends Model {
+  public id!: number;
+  public name!: string;
+}
+
+Role.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -16,8 +20,10 @@ const Role = sequelize.define(
     },
   },
   {
+    sequelize,
+    tableName: 'Role',
     timestamps: true,
   }
 );
 
-module.exports = Role;
+export default Role;

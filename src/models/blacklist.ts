@@ -1,8 +1,13 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/database');
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/database'
 
-const Blacklist = sequelize.define(
-  'Blacklist',
+class Blacklist extends Model {
+  public id!: number;
+  public token!: string;
+  public expiresAt!: Date; 
+}
+
+Blacklist.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -20,8 +25,10 @@ const Blacklist = sequelize.define(
     },
   },
   {
+    sequelize,
+    tableName: 'Blacklist',
     timestamps: true,
   }
 );
 
-module.exports = Blacklist;
+export default Blacklist;

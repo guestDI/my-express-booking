@@ -3,14 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const setupSwagger = require('./src/config/swagger');
+const setupSwagger = require('./config/swagger');
 require('dotenv').config();
 
-const usersRoutes = require('./src/routes/users');
-const roomsRoutes = require('./src/routes/rooms');
-const bookingRoutes = require('./src/routes/bookings');
-const utilsRoutes = require('./src/routes/utilsRoutes');
-const adminRoutes = require('./src/routes/admin');
+const usersRoutes = require('./routes/users');
+const roomsRoutes = require('./routes/rooms');
+const bookingRoutes = require('./routes/bookings');
+const utilsRoutes = require('./routes/utilsRoutes');
+const adminRoutes = require('./routes/admin');
 
 var app = express();
 
@@ -49,4 +49,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

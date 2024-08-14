@@ -1,7 +1,7 @@
 const { User } = require('../models/user');
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../../middleware/authMiddleware');
+const authenticateToken = require('../middleware/authMiddleware');
 
 router.get('/verify-email', authenticateToken, async (req, res) => {
   try {

@@ -4,16 +4,16 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+import app from '../app';
 var debug = require('debug')('my-booking-express:server');
 var http = require('http');
-const sequelize = require('../src/database/database');
-const Role = require('../src/models/role');
-const User = require('../src/models/user');
-const Room = require('../src/models/room');
-const Booking = require('../src/models/booking');
-const Payment = require('../src/models/payment');
-const Blacklist = require('../src/models/blacklist');
+import sequelize from '../config/database';
+import Role from '../models/role';
+import User from '../models/user';
+const Room = require('../models/room');
+const Booking = require('../models/booking');
+const Payment = require('../models/payment');
+import Blacklist from '../models/blacklist';
 
 sequelize
   .sync()
