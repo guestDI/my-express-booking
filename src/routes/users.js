@@ -105,8 +105,8 @@ const {
   validate,
   createRegistrationUserSchema,
   createLoginUserSchema,
-} = require('../middleware/validate');
-const authenticateToken = require('../middleware/authMiddleware');
+} = require('../../middleware/validate');
+const authenticateToken = require('../../middleware/authMiddleware');
 
 router.post('/register', createRegistrationUserSchema, validate, register);
 

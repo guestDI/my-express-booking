@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const checkRole = require('../middleware/checkRole');
+const checkRole = require('../../middleware/checkRole');
 const {
   createRoom,
   getAllRooms,
@@ -9,8 +9,8 @@ const {
   deleteRoom,
   searchRooms,
 } = require('../controllers/rooms');
-const authenticateToken = require('../middleware/authMiddleware');
-const { validate, createRoomSchema } = require('../middleware/validate');
+const authenticateToken = require('../../middleware/authMiddleware');
+const { validate, createRoomSchema } = require('../../middleware/validate');
 
 router.post(
   '/',
