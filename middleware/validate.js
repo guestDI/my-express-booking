@@ -32,7 +32,6 @@ const createLoginUserSchema = checkSchema({
     isEmail: {
       errorMessage: 'Invalid email format',
     },
-    normalizeEmail: true,
   },
   password: {
     in: ['body'],

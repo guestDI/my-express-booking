@@ -39,7 +39,7 @@
  * @swagger
  * /users/login:
  *   post:
- *     summary: login
+ *     summary: Endpoint for user login
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -58,8 +58,42 @@
  *     responses:
  *       200:
  *         description: User logged in
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /users/profile:
+ *   get:
+ *     summary: Endpoint for user login
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: Success
  *       404:
  *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /users/logout:
+ *   get:
+ *     summary: Endpoint for logut
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User logged out
  *       500:
  *         description: Internal server error
  */

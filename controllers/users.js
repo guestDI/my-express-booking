@@ -2,9 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Role = require('../models/role');
+const Blacklist = require('../models/blacklist');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-const pug = require('pug');
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -26,32 +26,34 @@ const register = async (req, res) => {
 
     const userRole = await Role.findOne({ where: { name: 'user' } });
     const hashedPassword = await bcrypt.hash(password, 10);
+    let token = '';
 
     const user = await User.create({
       name,
       email,
       password_hash: hashedPassword,
       role_id: userRole.id,
+    }).then(() => {
+      token = jwt.sign(
+        { id: user.id, name: user.name },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: '1h',
+        }
+      );
+
+      // const html = pug.renderFile('views/email.pug', {
+      //   verificationLink: `http://127.0.0.0:4000/verify-email?token=${token}`,
+      // });
+
+      // transporter.sendMail({
+      //   to: email,
+      //   from: 'notification@express-booking.com',
+      //   subject: 'Verify your email',
+      //   html: html,
+      // });
     });
 
-    const token = jwt.sign(
-      { id: user.id, name: user.name },
-      process.env.SECRET_KEY,
-      {
-        expiresIn: '1h',
-      }
-    );
-
-    const html = pug.renderFile('views/email.pug', {
-      verificationLink: `http://127.0.0.0:4000/verify-email?token=${token}`,
-    });
-
-    transporter.sendMail({
-      to: email,
-      from: 'notification@express-booking.com',
-      subject: 'Verify your email',
-      html: html,
-    });
     res.status(201).json({ token });
   } catch (err) {
     console.log('e', err);
@@ -103,10 +105,10 @@ const logout = async (req, res) => {
 
     await Blacklist.create({
       token,
-      expiresAt,
+      expiresAt: expiresAt,
     });
 
-    res.json({ message: 'Logged out successfully' });
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
   }

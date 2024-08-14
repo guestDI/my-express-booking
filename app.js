@@ -10,6 +10,7 @@ const usersRoutes = require('./routes/users');
 const roomsRoutes = require('./routes/rooms');
 const bookingRoutes = require('./routes/bookings');
 const utilsRoutes = require('./routes/utilsRoutes');
+const adminRoutes = require('./routes/admin');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/rooms', roomsRoutes);
 app.use('/api/booking', bookingRoutes);
 app.use('/api/payment', bookingRoutes);
 app.use('/api', utilsRoutes);
+app.use('/api/admin', adminRoutes);
 
 setupSwagger(app);
 
